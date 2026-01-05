@@ -14,14 +14,14 @@ export function Footer() {
 
         <div className="flex items-center gap-6">
           <Link
-            href="https://instagram.com"
+            href="https://www.instagram.com/cyborg_club_srm/"
             target="_blank"
             className="hover:text-primary transition-transform hover:scale-110"
           >
             <Instagram size={28} />
           </Link>
           <Link
-            href="https://linkedin.com"
+            href="https://www.linkedin.com/company/cyborg-club-srm/"
             target="_blank"
             className="hover:text-primary transition-transform hover:scale-110"
           >

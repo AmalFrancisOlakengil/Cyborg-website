@@ -6,12 +6,14 @@ import Image from "next/image"
 
 // Empty array as requested, user can add paths here later
 const galleryImages = [
-  "/robotics-competition.png",
-  "/circuit-board-close-up.jpg",
-  "/student-working-on-robot.jpg",
-  "/ai-visualization.png",
-  "/team-photo-tech-club.jpg",
-  "/robotic-arm-operating.jpg",
+  "/Designathon Footage/img1.jpg",
+  "/Designathon Footage/img2.jpg",
+  "/Designathon Footage/img3.jpg",
+  "/Designathon Footage/img4.jpg",
+  "/Designathon Footage/img5.jpg",
+  "/Designathon Footage/img6.jpg",
+  "/Designathon Footage/img7.jpg",
+  "/Designathon Footage/img8.jpg",
 ]
 
 export default function GalleryPage() {
@@ -31,7 +33,7 @@ export default function GalleryPage() {
         <h1 className="text-5xl md:text-7xl font-bold mb-4 tracking-tighter uppercase italic">
           Visual <span className="text-primary italic">Dump</span>
         </h1>
-        <p className="text-muted-foreground">Snapshots of innovation, teamwork, and robotic excellence.</p>
+        <p className="text-muted-foreground">Snapshots of innovation, teamwork, and excellence.</p>
       </div>
 
       <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">

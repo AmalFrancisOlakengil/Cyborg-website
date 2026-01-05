@@ -19,13 +19,33 @@ export default function ContactPage() {
     })
   }, [])
 
-  const handleSubmit = (e: React.FormEvent) => {
+const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    setTimeout(() => {
-      alert("Message sent successfully! We'll get back to you soon.")
+
+    const form = e.target as HTMLFormElement
+    const formData = new FormData(form)
+
+    try {
+      const response = await fetch("https://formsubmit.co/francisamal030@gmail.com", {
+        method: "POST",
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+
+      if (response.ok) {
+        alert("Message sent successfully! We'll get back to you soon.")
+        form.reset()
+      } else {
+        alert("Failed to send message. Please try again.")
+      }
+    } catch (error) {
+      alert("An error occurred. Please try again.")
+    } finally {
       setIsSubmitting(false)
-    }, 1500)
+    }
   }
 
   return (
@@ -78,6 +98,7 @@ export default function ContactPage() {
               <label className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Full Name</label>
               <input
                 type="text"
+                name="name"
                 required
                 className="w-full bg-black border border-border rounded-xl p-4 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
                 placeholder="John Doe"
@@ -87,6 +108,7 @@ export default function ContactPage() {
               <label className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Email Address</label>
               <input
                 type="email"
+                name="email"
                 required
                 className="w-full bg-black border border-border rounded-xl p-4 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
                 placeholder="john@example.com"
@@ -95,12 +117,15 @@ export default function ContactPage() {
             <div className="space-y-2">
               <label className="text-sm font-bold uppercase tracking-widest text-muted-foreground">Message</label>
               <textarea
+                name="message"
                 required
                 rows={5}
                 className="w-full bg-black border border-border rounded-xl p-4 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all resize-none"
                 placeholder="How can we help?"
               />
             </div>
+             <input type="hidden" name="_subject" value="New Contact Form Submission from Cyborg Club" />
+            <input type="hidden" name="_captcha" value="false" />
             <button
               type="submit"
               disabled={isSubmitting}

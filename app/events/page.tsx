@@ -9,29 +9,37 @@ const eventsData = {
   upcoming: [
     {
       id: 1,
-      title: "RoboWars 2026",
-      date: "March 15, 2026",
-      location: "Main Auditorium",
-      image: "/battle-bots-arena.jpg",
-      desc: "Our flagship combat robotics event. Prepare for sparks and destruction.",
+      title: "Coming Soon",
+      date: "will announce soon",
+      location: "Will announce soon",
+      image: "/events/coming-soon.jpg",
+      desc: "Coming soon...",
     },
   ],
   past: [
     {
       id: 2,
-      title: "AI Hackathon",
-      date: "Nov 10, 2025",
-      location: "CS Block",
-      image: "/students-hacking-ai.jpg",
-      desc: "A 24-hour sprint building generative AI solutions for local problems.",
+      title: "Tech Feud",
+      date: "Mar 28, 2025",
+      location: "MLCP Lab 6",
+      image: "/events/event1.jpeg",
+      desc: "Battle of wits in technology-themed quiz competition.",
     },
     {
       id: 3,
-      title: "Drone Workshop",
-      date: "Sept 22, 2025",
-      location: "Tech Lab",
-      image: "/drone-building-class.jpg",
-      desc: "Learning the basics of aerodynamics and PID tuning.",
+      title: "Spotlight Saga",
+      date: "April 12, 2024",
+      location: "HI-Tech Hall",
+      image: "/events/event2.jpeg",
+      desc: "The spotlight saga is a tech-themed storytelling competition.",
+    },
+    {
+      id: 4,
+      title: "Perspective Panaroma",
+      date: "April 12, 2024",
+      location: "Admin - 301, 302",
+      image: "/events/event3.jpeg",
+      desc: "Poster / Paper presentation competition",
     },
   ],
 }
@@ -80,7 +88,7 @@ export default function EventsPage() {
                 <h3 className="text-4xl font-bold mb-4">{event.title}</h3>
                 <p className="text-muted-foreground mb-8 text-lg">{event.desc}</p>
                 <button className="self-start px-8 py-3 bg-white text-black font-bold rounded-full hover:bg-primary hover:text-white transition-colors">
-                  Register Now
+                  <s>Register Now</s>
                 </button>
               </div>
             </div>
