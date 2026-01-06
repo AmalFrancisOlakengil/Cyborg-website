@@ -4,13 +4,13 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(0.1 0 0); /* Near black */
-  --foreground: oklch(0.98 0 0); /* Off white */
+  --background: oklch(0.1 0 0);
+  --foreground: oklch(0.98 0 0);
   --card: oklch(0.15 0 0);
   --card-foreground: oklch(0.98 0 0);
   --popover: oklch(0.15 0 0);
   --popover-foreground: oklch(0.98 0 0);
-  --primary: oklch(0.6 0.25 25); /* Strong Red */
+  --primary: oklch(0.6 0.25 25);
   --primary-foreground: oklch(0.98 0 0);
   --secondary: oklch(0.25 0 0);
   --secondary-foreground: oklch(0.98 0 0);
@@ -127,4 +127,201 @@
 .gsap-reveal {
   opacity: 0;
   visibility: hidden;
+}
+
+/* =========================================
+   VISION SECTION STYLES
+   ========================================= */
+
+/* --- Sticky Header --- */
+.vision-sticky-header {
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  width: 100%;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.vision-sticky-header h1 {
+  will-change: transform, opacity;
+  transform: translateY(40px);
+  opacity: 0;
+}
+
+/* --- Container --- */
+.vision-card-container {
+  position: relative;
+  width: 75%;
+  height: 60vh; 
+  display: flex;
+  gap: 0; 
+  perspective: 1000px;
+  transform: translateY(40px);
+  will-change: width, gap;
+}
+
+/* --- 3D Card --- */
+.vision-card-3d {
+  position: relative;
+  flex: 1; 
+  aspect-ratio: 5 / 7;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transform-origin: center;
+}
+
+.vision-card-front,
+.vision-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  
+  /* CRITICAL MOBILE FIXES */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translate3d(0,0,0);
+  -webkit-transform: translate3d(0,0,0);
+  
+  border-radius: inherit;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+}
+
+/* --- Front Face --- */
+.vision-card-front {
+  background: linear-gradient(135deg, #111111 0%, #1a1a1a 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255,255,255,0.08);
+  z-index: 2; 
+}
+
+.vision-card-front::after {
+  content: '';
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+/* --- Typography (Front Text) --- */
+.font-apple {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.vision-front-text {
+  font-size: 3rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  color: #ffffff; /* SOLID WHITE COLOR */
+  transition: color 0.3s ease;
+  z-index: 2;
+  width: 100%;
+  text-align: center;
+  padding: 0 10px;
+  
+  -webkit-backface-visibility: hidden; 
+  backface-visibility: hidden;
+}
+
+/* --- Back Face --- */
+.vision-card-back {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+  padding: 2rem;
+  border-radius: 20px; 
+}
+
+.vision-card-back span {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  opacity: 0.4;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.vision-card-back p {
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+/* --- DESKTOP --- */
+@media (min-width: 1024px) {
+  #v-card-1 { border-radius: 20px 0 0 20px; }
+  #v-card-3 { border-radius: 0 20px 20px 0; }
+  
+  .vision-front-text {
+    font-size: 4.5vw; 
+    letter-spacing: -0.03em;
+  }
+}
+
+/* --- MOBILE --- */
+@media (max-width: 1023px) {
+  .vision-sticky-header {
+    position: relative; 
+    top: auto;
+    left: auto;
+    transform: none;
+    margin-bottom: 2rem;
+    padding-top: 4rem;
+  }
+  
+  .vision-card-container {
+    width: 90%;
+    height: auto; 
+    min-height: 100vh;
+    flex-direction: column; 
+    gap: 0; 
+    margin: 0 auto;
+    transform: none;
+  }
+
+  .vision-card-3d {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    height: 450px; 
+    flex: none; 
+    aspect-ratio: auto;
+    border-radius: 0;
+  }
+
+  #v-card-1 { border-radius: 20px 20px 0 0; }
+  #v-card-3 { border-radius: 0 0 20px 20px; }
+  #v-card-2 { border-radius: 0; } 
+  
+  .vision-card-front, .vision-card-back {
+    border-radius: inherit;
+  }
+}
+
+/* Gradients */
+#v-card-1 .vision-card-back {
+  background: linear-gradient(165.825deg, rgb(199, 199, 199) 0%, rgb(131, 131, 131) 100%);
+  color: #0f0f0f;
+}
+#v-card-2 .vision-card-back {
+  background: linear-gradient(177deg, rgb(250, 76, 45) -18%, rgb(191, 24, 21) 31%, rgb(74, 10, 8) 100%);
+  color: white;
+}
+#v-card-3 .vision-card-back {
+  background: linear-gradient(rgb(31, 31, 31) 0%, rgb(22, 22, 22) 100%);
+  color: white;
 }
