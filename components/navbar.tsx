@@ -1,16 +1,16 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { gsap } from "gsap"
 import { Menu, X } from "lucide-react"
-import { useState } from "react"
 
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "About Us", href: "/about" },
   { name: "Events", href: "/events" },
+  { name: "Blogs", href: "/blogs" }, // Added Blogs here
   { name: "Team", href: "/team" },
   { name: "Gallery", href: "/gallery" },
   { name: "Recruitment", href: "/recruitment" },
