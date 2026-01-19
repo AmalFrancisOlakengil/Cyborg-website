@@ -1,5 +1,6 @@
 "use client"
-
+import { ShaderAnimation } from "@/components/shader-animation";
+import { SplineScene } from "@/components/ui/splite";
 import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
@@ -87,34 +88,50 @@ const AlumniCard = ({ img, name, company, companyLogo, batch, offer }: any) => (
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null)
   const heroSectionRef = useRef<HTMLElement>(null)
-  const tiltCardRef = useRef<HTMLDivElement>(null)
-  const tiltImageRef = useRef<HTMLDivElement>(null)
   const heroTextRef = useRef<HTMLDivElement>(null)
+  // Ref specifically for the "Cyborg Club" text to apply the tilt effect
+  const titleTextRef = useRef<HTMLHeadingElement>(null) 
   const visionStickyRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
+useEffect(() => {
+    // --- 0. MOUSE MOVE TILT LOGIC (Applied to Text Only) ---
+    // This creates the quick setter functions for high performance 
+    const xTo = gsap.quickTo(titleTextRef.current, "rotationY", { duration: 0.3, ease: "power3" })
+    const yTo = gsap.quickTo(titleTextRef.current, "rotationX", { duration: 0.3, ease: "power3" })
+
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!titleTextRef.current) return
+      const { clientX, clientY } = e
+      const { innerWidth, innerHeight } = window
+      
+      // Calculate mouse position from center (-1 to 1)
+      const xPos = (clientX / innerWidth - 0.5) * 2
+      const yPos = (clientY / innerHeight - 0.5) * 2
+      
+      // Apply rotation (Multiplier 20 for subtle, 50 for extreme)
+      xTo(xPos * 30) 
+      yTo(-yPos * 30)
+    }
+
+    window.addEventListener("mousemove", handleMouseMove)
+
+    // --- EXISTING GSAP CONTEXT ---
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia()
 
-      // 1. HERO ANIMATION
-      const xTo = gsap.quickTo(tiltCardRef.current, "rotationY", { duration: 0.3, ease: "power3" })
-      const yTo = gsap.quickTo(tiltCardRef.current, "rotationX", { duration: 0.3, ease: "power3" })
-      const imgXTo = gsap.quickTo(tiltImageRef.current, "x", { duration: 0.5, ease: "power3" })
-      const imgYTo = gsap.quickTo(tiltImageRef.current, "y", { duration: 0.5, ease: "power3" })
-
-      gsap.timeline()
-        .from(heroTextRef.current?.children || [], { y: 100, opacity: 0, duration: 1.2, stagger: 0.15, ease: "power4.out" })
-        .from(tiltCardRef.current, { scale: 0, opacity: 0, rotationY: 180, duration: 1.5, ease: "elastic.out(1, 0.75)" }, "-=1")
-
-      const handleMouseMove = (e: MouseEvent) => {
-        if (!tiltCardRef.current) return
-        const { clientX, clientY } = e
-        const { innerWidth, innerHeight } = window
-        const xPos = (clientX / innerWidth - 0.5) * 2
-        const yPos = (clientY / innerHeight - 0.5) * 2
-        xTo(xPos * 20); yTo(-yPos * 20); imgXTo(xPos * 60); imgYTo(yPos * 60)
-      }
-      window.addEventListener("mousemove", handleMouseMove)
+      // 1. ZOOM OUT & FADE IN LOAD ANIMATION (Updated)
+      const tl = gsap.timeline();
+      
+      // We target the individual elements for a cleaner staggered zoom
+      tl.from(heroTextRef.current?.querySelectorAll("h1, p, div"), {
+        scale: 1.3,          // Start larger (zoomed in)
+        z: 100,              // Bring it slightly forward in 3D space
+        opacity: 0,          // Fade in
+        filter: "blur(10px)", // Optional: adding a slight blur for a "lens" effect
+        duration: 1.5,
+        stagger: 0.15,
+        ease: "power3.out",
+      });
 
       // 2. VISION ANIMATION (DESKTOP PIN)
       mm.add("(min-width: 1024px)", () => {
@@ -138,7 +155,7 @@ export default function Home() {
             .to("#v-card-3", { x: 30, borderRadius: "20px", duration: 2 }, "<")
             .to(".vision-card-3d", { borderRadius: "20px", duration: 2 }, "<")
             .to(".vision-card-3d", { rotationY: 180, duration: 3, stagger: 0.1, ease: "power2.inOut" })
-            .to(["#v-card-1", "#v-card-3"], { y: 30, rotationZ: (i) => (i === 0 ? -15 : 15), duration: 3 }, "<")
+            .to(["#v-card-1", "#v-card-3"], { y: 30, rotationZ: (i: number) => (i === 0 ? -15 : 15), duration: 3 }, "<")
         }
       })
 
@@ -149,27 +166,15 @@ export default function Home() {
           y: 0,
           scrollTrigger: { trigger: visionStickyRef.current, start: "top 70%", end: "top 40%", scrub: 1 },
         })
-
         gsap.to(".vision-card-container", {
           gap: "40px",
-          scrollTrigger: {
-            trigger: visionStickyRef.current,
-            start: "top 60%",
-            end: "bottom bottom",
-            scrub: 1
-          }
+          scrollTrigger: { trigger: visionStickyRef.current, start: "top 60%", end: "bottom bottom", scrub: 1 }
         });
-
         gsap.utils.toArray(".vision-card-3d").forEach((card: any) => {
           gsap.to(card, {
             rotationY: 180,
             borderRadius: "20px", 
-            scrollTrigger: { 
-              trigger: card, 
-              start: "top 35%", 
-              end: "top 0%",
-              scrub: 1 
-            },
+            scrollTrigger: { trigger: card, start: "top 35%", end: "top 0%", scrub: 1 },
           })
         })
       })
@@ -185,72 +190,76 @@ export default function Home() {
         y: 100, opacity: 0, rotateX: -45, stagger: 0.1, duration: 0.8, ease: "back.out(1.7)",
       })
 
-      return () => window.removeEventListener("mousemove", handleMouseMove)
     }, containerRef)
-    return () => ctx.revert()
+    
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove)
+      ctx.revert()
+    }
   }, [])
 
   return (
     <div ref={containerRef} className="bg-black text-white selection:bg-primary">
-      {/* HERO SECTION */}
-      <section ref={heroSectionRef} className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-6 lg:px-24 pt-32 lg:pt-0 perspective-1000">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(220,38,38,0.15),transparent_50%)] z-0 pointer-events-none" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] z-0 pointer-events-none opacity-30" />
+   {/* HERO SECTION */}
+      <section ref={heroSectionRef} className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-6 pt-20 lg:pt-0 perspective-2000">
+        
+        {/* SHADER BACKGROUND - FIXED POSITIONING */}
+        <div className="absolute inset-0 z-0 pointer-events-none">
+          <ShaderAnimation />
+        </div>
 
-        <div className="container mx-auto grid lg:grid-cols-2 gap-8 lg:gap-12 items-center relative z-10">
+        {/* BACKGROUND TINTS & GRIDS */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(220,38,38,0.2),transparent_70%)] z-1 pointer-events-none" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] z-1 pointer-events-none opacity-25" />
+
+        <div className="container mx-auto relative z-10 w-full flex flex-col items-center justify-center">
           
-          {/* TEXT CONTAINER (z-10 to stay under logo if overlaps occur) */}
-          <div ref={heroTextRef} className="text-center lg:text-left order-2 lg:order-1 relative z-10">
-            {/* UPDATED FONT SIZES:
-               lg:text-6xl  -> Safe for small laptops (1024px+)
-               xl:text-8xl  -> Safe for large laptops (1280px+)
-               2xl:text-[10rem] -> Massive for Desktops/Monitors (1536px+)
-            */}
-            <h1 className="text-5xl sm:text-7xl lg:text-6xl xl:text-8xl 2xl:text-[10rem] font-black tracking-tighter mb-4 leading-[0.8] uppercase">
-              CYBORG <br /> <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-700">CLUB</span>
+          {/* CENTERED TEXT CONTAINER */}
+          <div ref={heroTextRef} className="text-center flex flex-col items-center relative z-20 [transform-style:preserve-3d]">
+            
+            {/* 3D TILT TEXT */}
+            <h1 
+              ref={titleTextRef}
+              className="text-6xl sm:text-8xl lg:text-[10rem] xl:text-[13rem] font-black tracking-tighter mb-4 leading-[0.8] uppercase text-white drop-shadow-2xl will-change-transform"
+              style={{ transformStyle: "preserve-3d" }}
+            >
+              CYBORG <br /> 
+              <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-zinc-700">
+                CLUB
+              </span>
             </h1>
-            <p className="text-lg md:text-xl text-zinc-400 max-w-xl mx-auto lg:mx-0 mb-10 leading-relaxed font-medium">
+            
+            <p className="text-lg md:text-2xl text-zinc-400 max-w-2xl mt-8 mb-12 leading-relaxed font-medium">
               Join the elite engineering collective where biology meets precision.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <Link href="/recruitment" className="bg-primary text-black px-8 py-4 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-white hover:scale-105 transition-all duration-300 group">
+
+            <div className="flex flex-col sm:flex-row gap-6 w-full sm:w-auto justify-center">
+              <Link href="/recruitment" className="bg-primary text-black px-12 py-5 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-white hover:scale-105 transition-all duration-300 group text-lg">
                 Join the Hub <ArrowRight className="group-hover:translate-x-1 transition-transform" />
               </Link>
-              <Link href="/events" className="border border-white/20 bg-white/5 backdrop-blur-sm px-8 py-4 rounded-full font-bold hover:bg-white/10 hover:border-white/40 transition-all duration-300">
+              <Link href="/events" className="border border-white/20 bg-white/5 backdrop-blur-sm px-12 py-5 rounded-full font-bold hover:bg-white/10 hover:border-white/40 transition-all duration-300 flex items-center justify-center text-lg">
                 Explore Events
               </Link>
             </div>
           </div>
 
-          <div className="flex items-center justify-center order-1 lg:order-2 perspective-1000 relative z-20">
-            {/* UPDATED CARD SIZES:
-               lg:w-[350px] -> Safe for small laptops
-               xl:w-[450px] -> Safe for large laptops
-               2xl:w-[550px] -> Massive for Desktops
-            */}
-            <div ref={tiltCardRef} className="relative w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] lg:w-[350px] lg:h-[350px] xl:w-[450px] xl:h-[450px] 2xl:w-[550px] 2xl:h-[550px] rounded-[3rem] bg-gradient-to-br from-zinc-800/50 to-black/80 border border-white/10 backdrop-blur-xl shadow-[0_0_50px_-12px_rgba(220,38,38,0.3)] flex items-center justify-center will-change-transform group overflow-visible" style={{ transformStyle: "preserve-3d" }}>
-              <div className="absolute inset-0 rounded-[3rem] opacity-20 bg-[url('https://assets.codepen.io/16327/noise-e82662fe.png')] mix-blend-overlay pointer-events-none" />
-              <div className="absolute inset-6 rounded-[2.5rem] border border-white/5 pointer-events-none" style={{ transform: "translateZ(20px)" }} />
-              <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-primary/40 to-transparent animate-scan z-10 opacity-50" />
-              <div ref={tiltImageRef} className="relative w-[80%] h-[80%] filter drop-shadow-[0_20px_50px_rgba(0,0,0,0.5)]" style={{ transformStyle: "preserve-3d", transform: "translateZ(60px)" }}>
-                <Image src="/img.png" alt="Cyborg Logo" fill className="object-contain" priority />
-              </div>
-            </div>
-          </div>
         </div>
       </section>
-
-      {/* VISION SECTION */}
+   {/* VISION SECTION */}
       <section ref={visionStickyRef} className="relative w-full min-h-auto lg:min-h-screen flex flex-col justify-start lg:justify-center items-center bg-black overflow-hidden py-32 lg:py-0 border-t border-zinc-900">
         <div className="vision-sticky-header px-6 mb-16 lg:mb-0 text-center relative z-10">
-          <h1 className="text-4xl md:text-6xl font-serif text-white opacity-0 translate-y-10">Three pillars with one purpose</h1>
+          <h1 className="text-4xl md:text-6xl font-[-apple-system,BlinkMacSystemFont,'Inter',sans-serif] font-bold tracking-tighter text-white opacity-0 translate-y-10">Three pillars with one purpose</h1>
         </div>
 
         <div className="vision-card-container flex flex-col lg:flex-row items-center lg:gap-0 mt-20 lg:mt-0 w-full lg:w-auto px-6 md:px-0 pt-8">
           
           <div className="vision-card-3d" id="v-card-1">
-            <div className="vision-card-front"><h2 className="vision-front-text font-apple">OUR</h2></div>
-            <div className="vision-card-back">
+            {/* Front */}
+            <div className="vision-card-front !bg-white !text-black border-2 border-transparent">
+              <h2 className="vision-front-text font-apple !text-black">OUR</h2>
+            </div>
+            {/* Back */}
+            <div className="vision-card-back !text-black border-0">
               <span>01</span>
               <p>Tech Hub</p>
               <p className="text-sm mt-4 opacity-80 font-sans">Platform for students to explore AI & Robotics.</p>
@@ -258,8 +267,12 @@ export default function Home() {
           </div>
 
           <div className="vision-card-3d" id="v-card-2">
-             <div className="vision-card-front"><h2 className="vision-front-text font-apple text-primary/70">SHARED</h2></div>
-            <div className="vision-card-back">
+              {/* Front */}
+              <div className="vision-card-front !bg-white !text-black border-2 border-transparent">
+                <h2 className="vision-front-text font-apple !text-black">SHARED</h2>
+              </div>
+              {/* Back */}
+            <div className="vision-card-back !text-white border-0">
               <span>02</span>
               <p>Innovation First</p>
               <p className="text-sm mt-4 opacity-80 font-sans">Translate Vision into Reality. Building the future circuits.</p>
@@ -267,8 +280,12 @@ export default function Home() {
           </div>
 
           <div className="vision-card-3d" id="v-card-3">
-             <div className="vision-card-front"><h2 className="vision-front-text font-apple">VISION</h2></div>
-            <div className="vision-card-back">
+              {/* Front */}
+              <div className="vision-card-front !bg-white !text-black border-2 border-transparent">
+                <h2 className="vision-front-text font-apple !text-black">VISION</h2>
+              </div>
+              {/* Back */}
+            <div className="vision-card-back !text-white border-0">
               <span>03</span>
               <p>Community Impact</p>
               <p className="text-sm mt-4 opacity-80 font-sans">Bridging the gap between academia and industry.</p>
