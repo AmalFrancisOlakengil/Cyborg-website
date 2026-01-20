@@ -122,7 +122,7 @@ const teamMembers = [
   {
     id: 15,
     name: "Paavesh Pradish",
-    role: "Contant domain member",
+    role: "Content domain member",
     image: "/team/team12.png",
     bio: "Learn.Build.Inovate",
     socials: { github: "https://github.com/paaveshpradish05-beep", linkedin: "https://www.linkedin.com/in/paavesh-pradish-001762342?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app", twitter: "#" },
