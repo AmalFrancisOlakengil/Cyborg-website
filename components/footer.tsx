@@ -8,7 +8,7 @@ export function Footer() {
         <div className="text-center md:text-left">
           <h2 className="text-2xl font-bold text-primary mb-2 tracking-tighter">CYBORG</h2>
           <p className="text-muted-foreground max-w-xs">
-            Redefining Tech with Spectacular Events. Join the revolution in AI & Robotics.
+            Redefining intelligence through ideas, innovation, and impact.
           </p>
         </div>
 
@@ -35,7 +35,7 @@ export function Footer() {
         <div className="text-sm text-muted-foreground text-center md:text-right">
           © {new Date().getFullYear()} Cyborg Club. All rights reserved.
           <br />
-          Built for the future of Robotics.
+          Before Machines Think, Minds Do
         </div>
       </div>
     </footer>

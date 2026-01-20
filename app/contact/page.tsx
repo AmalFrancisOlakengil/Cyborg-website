@@ -66,7 +66,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               </div>
               <div>
                 <h3 className="font-bold text-lg">Secretary</h3>
-                <p className="text-muted-foreground">+91 98765 43210</p>
+                <p className="text-muted-foreground">+91 63697 39598</p>
               </div>
             </div>
 
@@ -76,7 +76,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               </div>
               <div>
                 <h3 className="font-bold text-lg">Public Relations</h3>
-                <p className="text-muted-foreground">+91 98765 43211</p>
+                <p className="text-muted-foreground">+91 63692 27752</p>
               </div>
             </div>
 
@@ -86,7 +86,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               </div>
               <div>
                 <h3 className="font-bold text-lg">Email Us</h3>
-                <p className="text-muted-foreground">cyborg@college.edu</p>
+                <p className="text-muted-foreground">srm.cyborg.club@gmail.com</p>
               </div>
             </div>
           </div>

@@ -230,7 +230,7 @@ useEffect(() => {
             </h1>
             
             <p className="text-lg md:text-2xl text-zinc-400 max-w-2xl mt-8 mb-12 leading-relaxed font-medium">
-              Join the elite engineering collective where biology meets precision.
+              Inspired by thought, shaped by action, the Cyborg spirit!
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6 w-full sm:w-auto justify-center">
@@ -262,7 +262,7 @@ useEffect(() => {
             <div className="vision-card-back !text-black border-0">
               <span>01</span>
               <p>Tech Hub</p>
-              <p className="text-sm mt-4 opacity-80 font-sans">Platform for students to explore AI & Robotics.</p>
+              <p className="text-sm mt-4 opacity-80 font-sans">Where students explore intelligence beyond the classroom</p>
             </div>
           </div>
 
@@ -275,7 +275,7 @@ useEffect(() => {
             <div className="vision-card-back !text-white border-0">
               <span>02</span>
               <p>Innovation First</p>
-              <p className="text-sm mt-4 opacity-80 font-sans">Translate Vision into Reality. Building the future circuits.</p>
+              <p className="text-sm mt-4 opacity-80 font-sans">Turning ideas into reality , the Cyborg way.</p>
             </div>
           </div>
 
@@ -288,7 +288,7 @@ useEffect(() => {
             <div className="vision-card-back !text-white border-0">
               <span>03</span>
               <p>Community Impact</p>
-              <p className="text-sm mt-4 opacity-80 font-sans">Bridging the gap between academia and industry.</p>
+              <p className="text-sm mt-4 opacity-80 font-sans">Building connections beyond the classroom.</p>
             </div>
           </div>
         </div>
@@ -331,7 +331,12 @@ useEffect(() => {
           <p className="mt-8 text-xl font-bold uppercase tracking-widest text-muted-foreground">— Cyborg Motto</p>
         </div>
       </section>
-
+      <div className="flex-1 relative">
+          <SplineScene 
+            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+            className="w-full h-full"
+          />
+        </div>
       <style jsx global>{`
         @keyframes scan {
           0% { top: 0; opacity: 0; }

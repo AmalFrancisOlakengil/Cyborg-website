@@ -4,6 +4,34 @@ import { useEffect } from "react"
 import { gsap } from "gsap"
 import Image from "next/image"
 
+// 1. Faculty data list defined at the start
+const FACULTY_MEMBERS = [
+  {
+    name: "Dr. Balika J Chelliah",
+    department: "Vice Principal - Founder",
+    quote: "Building a future where human intelligence and machine precision coexist to solve the world's greatest challenges.",
+    image: "/about/faculty2.jpg"
+  },
+  {
+    name: "Dr. Judy Flavia",
+    department: "Assistant Professor, CSE AIML",
+    quote: "AI is not just about writing code; it's about architecting systems that can perceive, learn, and reason.",
+    image: "/professor-portrait.png"
+  },
+  {
+    name: "Dr. Rubin Bose",
+    department: "Assistant Professor, CSE AIML",
+    quote: "Data is the new raw material, and machine learning is the tool that shapes it into meaningful innovation.",
+    image: "/about/faculty3.jpg"
+  },
+  {
+    name: "Mrs. Swathi",
+    department: "Assistant Professor, CSE AIML",
+    quote: "Empowering students to move beyond being users of technology to becoming the creators of intelligent solutions.",
+    image: "/about/faculty1.jpg"
+  }
+];
+
 export default function AboutPage() {
   useEffect(() => {
     gsap.from(".reveal-up", {
@@ -27,14 +55,10 @@ export default function AboutPage() {
             <h2 className="text-3xl font-bold mb-4 border-l-4 border-primary pl-4">Our History</h2>
             <div className="text-muted-foreground leading-relaxed space-y-4">
               <p>
-                Founded in 2018, Cyborg was born out of a small group of electronics enthusiasts who wanted to push the
-                boundaries of autonomous systems. What started as a robotic-arm project in a garage has now evolved into
-                one of the most prestigious technical societies in our college.
+                Cyborg was founded by Dr. Ballika J. Chelliah under the Department of Artificial Intelligence & Machine Learning with the vision of creating a platform where students could explore, innovate, and excel. What began as a platform for technical curiosity has evolved into a dynamic, collaborative community.
               </p>
               <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et
-                dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                ex ea commodo consequat.
+                At the heart of Cyborg lies a vibrant ecosystem of developers, designers, and thinkers. We believe that the best innovations happen at the intersection of diverse perspectives.
               </p>
             </div>
           </section>
@@ -42,7 +66,7 @@ export default function AboutPage() {
           <section>
             <h2 className="text-3xl font-bold mb-4 border-l-4 border-primary pl-4">Our Institution</h2>
             <p className="text-muted-foreground">
-              We are proud to be a part of the Excellence Technical Institute, which provides us with the
+              We are proud to be a part of SRM Ramapuram campus, which provides us with the
               state-of-the-art laboratory facilities and resources required to compete at national and international
               levels.
             </p>
@@ -50,21 +74,35 @@ export default function AboutPage() {
         </div>
 
         <div className="relative h-[400px] rounded-3xl overflow-hidden border border-border reveal-up">
-          <Image src="/robotics-lab-modern.jpg" alt="Robotics Lab" fill className="object-cover" />
+          <Image src="/about/Cyborg_team.jpg" alt="Club picture" fill className="object-cover" />
         </div>
       </div>
 
       <section className="reveal-up">
         <h2 className="text-4xl font-bold mb-12 text-center">Faculty In-Charge</h2>
-        <div className="max-w-sm mx-auto bg-zinc-900 border border-border p-8 rounded-3xl text-center">
-          <div className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-2 border-primary">
-            <Image src="/professor-portrait.png" alt="Faculty Profile" fill className="object-cover" />
-          </div>
-          <h3 className="text-2xl font-bold">Dr. Sarah Jenkins</h3>
-          <p className="text-primary font-medium mb-4">Department of AI & Robotics</p>
-          <p className="text-sm text-muted-foreground italic">
-            "Guiding the next generation of engineers to build ethical and powerful AI systems."
-          </p>
+        
+        {/* 2. Mapping through the faculty list */}
+        <div className="flex flex-wrap justify-center gap-8">
+          {FACULTY_MEMBERS.map((faculty, index) => (
+            <div 
+              key={index} 
+              className="max-w-sm w-full bg-zinc-900 border border-border p-8 rounded-3xl text-center"
+            >
+              <div className="relative w-32 h-32 mx-auto mb-6 rounded-full overflow-hidden border-2 border-primary">
+                <Image 
+                  src={faculty.image} 
+                  alt={faculty.name} 
+                  fill 
+                  className="object-cover" 
+                />
+              </div>
+              <h3 className="text-2xl font-bold">{faculty.name}</h3>
+              <p className="text-primary font-medium mb-4">{faculty.department}</p>
+              <p className="text-sm text-muted-foreground italic">
+                "{faculty.quote}"
+              </p>
+            </div>
+          ))}
         </div>
       </section>
     </div>
