@@ -5,53 +5,48 @@ import { gsap } from "gsap"
 import Image from "next/image"
 import { ArrowUpRight, User } from "lucide-react"
 
-// Updated data with the specific image path
 const blogsData = [
   {
     id: 1,
-    title: <span>OpenAI Gave Us a <span className="italic font-serif text-primary">Glimpse</span> Into Their AI Coding Playbook</span>,
-    excerpt: "Lessons from the team that built Codex and launched a number-one app with it.",
-    author: "Katie Parrott",
-    date: "Jan 12, 2026",
-    // Next.js serves files in "public" from the root "/"
-    image: "/images/cyborg-white.png", 
-    category: "AI & Dev",
+    title: <span>Teaching LLMs How to <span className="italic font-serif text-primary">Count</span> Correctly</span>,
+    excerpt: "IBM researchers propose a variation on a popular architecture to improve memory and logical reasoning for math problems.",
+    author: "Kim Martineau",
+    date: "Dec 05, 2025",
+    image: "/blogs/img1.jpeg", 
+    category: "Research",
+    link: "https://research.ibm.com/blog/state-tracking-for-state-space-models"
   },
   {
     id: 2,
-    title: <span>How Every Is <span className="italic font-serif text-primary">Harnessing</span> the World-changing Shift of Opus 4.5</span>,
-    excerpt: "Five patterns from our Opus 4.5 Claude Code Camp you can apply today.",
-    author: "Katie Parrott",
-    date: "Jan 10, 2026",
-    image: "/images/cyborg-white.png",
-    category: "Technology",
+    title: <span>Building the Inference Cloud: What Comes <span className="italic font-serif text-primary">Next</span></span>,
+    excerpt: "Why 2026 is the year of the inference cloud and how it integrates AI workflows for digital native enterprises.",
+    author: "Paddy Srinivasan",
+    date: "Jan 07, 2026",
+    image: "/blogs/img2.jpeg", 
+    category: "Cloud & AI",
+    link: "https://www.digitalocean.com/blog/building-inference-cloud-what-comes-next"
   },
   {
     id: 3,
-    title: <span>Claude Code: The Most Common <span className="italic font-serif text-primary">Questions</span> Beginners Ask</span>,
-    excerpt: "The 23 questions and answers you need to get started immediately.",
-    author: "Nityesh Agarwal",
-    date: "Jan 08, 2026",
-    image: "/images/cyborg-white.png",
-    category: "Tutorials",
+    title: <span>AI Literacy Resources for Teens and <span className="italic font-serif text-primary">Parents</span></span>,
+    excerpt: "A new guide to help families use ChatGPT thoughtfully, including how models are trained and tips for responsible use.",
+    author: "OpenAI Team",
+    date: "Dec 18, 2025",
+    // Swapped to be correct: 3rd link = img3
+    image: "/blogs/img3.jpeg", 
+    category: "Education",
+    link: "https://openai.com/index/ai-literacy-resources-for-teens-and-parents/"
   },
   {
     id: 4,
-    title: <span>When AI Can Do Your <span className="italic font-serif text-primary">Job</span>, Who Else Are You?</span>,
-    excerpt: "Your rare skill just became common. Here's what that makes possible.",
-    author: "Danny Aziz",
-    date: "Jan 05, 2026",
-    image: "/images/cyborg-white.png",
-    category: "Career",
-  },
-  {
-    id: 5,
-    title: <span>The Future of Web <span className="italic font-serif text-primary">Design</span> in 2026</span>,
-    excerpt: "Why minimal interfaces and heavy typography are making a comeback.",
-    author: "Alex Rivera",
-    date: "Jan 02, 2026",
-    image: "/images/cyborg-white.png",
-    category: "Design",
+    title: <span>Emergent Affective Computing: The Unintended <span className="italic font-serif text-primary">Evolution</span></span>,
+    excerpt: "How AI is developing accidental emotional intelligence and what that means for human-machine interaction.",
+    author: "S. Bhattacharjee",
+    date: "Jan 06, 2026",
+    // Swapped to be correct: 4th link = img4
+    image: "/blogs/img4.jpeg", 
+    category: "Machine Learning",
+    link: "https://towardsai.net/p/machine-learning/emergent-affective-computing-the-unintended-evolution-of-machine-emotional-intelligence"
   },
 ]
 
@@ -85,26 +80,33 @@ export default function BlogsPage() {
           {blogsData.map((blog) => (
             <article 
               key={blog.id} 
-              className="blog-card group flex flex-col h-full cursor-pointer"
+              className="blog-card group flex flex-col h-full"
             >
-              {/* Image Container */}
-              <div className="relative w-full aspect-square mb-6 overflow-hidden rounded-lg bg-zinc-900 border border-white/5">
+              {/* Image Container - Linked */}
+              <a 
+                href={blog.link} 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="relative w-full aspect-square mb-6 overflow-hidden rounded-lg bg-zinc-900 border border-white/5 block"
+              >
                 <Image
                   src={blog.image}
                   alt="Blog cover"
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-105 p-4" // Added p-4 if the PNG is a logo and needs padding
+                  className="object-cover transition-transform duration-700 group-hover:scale-105 p-4" 
                 />
                 <div className="absolute top-4 left-4 bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-xs font-bold text-white uppercase tracking-wider">
                   {blog.category}
                 </div>
-              </div>
+              </a>
 
               {/* Content */}
               <div className="flex flex-col flex-grow">
-                <h3 className="text-2xl font-bold leading-tight mb-3 text-zinc-100 group-hover:text-primary transition-colors">
-                  {blog.title}
-                </h3>
+                <a href={blog.link} target="_blank" rel="noopener noreferrer">
+                    <h3 className="text-2xl font-bold leading-tight mb-3 text-zinc-100 group-hover:text-primary transition-colors cursor-pointer">
+                    {blog.title}
+                    </h3>
+                </a>
 
                 <p className="text-muted-foreground text-sm leading-relaxed mb-6 line-clamp-3">
                   {blog.excerpt}
@@ -126,9 +128,15 @@ export default function BlogsPage() {
                     </div>
                   </div>
                   
-                  <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-black transition-all duration-300">
+                  {/* The Arrow Link */}
+                  <a 
+                    href={blog.link}
+                    target="_blank"
+                    rel="noopener noreferrer" 
+                    className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-black transition-all duration-300 cursor-pointer"
+                  >
                     <ArrowUpRight size={16} />
-                  </div>
+                  </a>
                 </div>
               </div>
             </article>
