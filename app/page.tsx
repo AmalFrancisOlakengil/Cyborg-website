@@ -7,9 +7,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { TextPlugin } from "gsap/TextPlugin"
 import { ArrowRight } from "lucide-react"
 import Link from "next/link"
-import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { Marquee } from "@/components/ui/marquee"
+
+ 
 
 gsap.registerPlugin(ScrollTrigger, TextPlugin)
 
@@ -294,17 +295,39 @@ useEffect(() => {
         </div>
       </section>
 
-      {/* BIG TEXT REVEAL */}
-      <section className="py-32 px-6 bg-zinc-950 overflow-hidden scroll-text-reveal-container">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl sm:text-6xl md:text-8xl font-black leading-[1] tracking-tighter">
-            {["BUILDING THE", "NEXT GENERATION", "OF CYBERNETIC", "INTELLIGENCE."].map((t, i) => (
-              <span key={i} className={cn("scroll-text-reveal block [transform-style:preserve-3d]", i === 2 ? "text-primary" : "text-white")}>{t}</span>
-            ))}
-          </h2>
-        </div>
-      </section>
+      {/* BIG TEXT REVEAL & ROBOT SECTION */}
+<section className="py-0 px-6 bg-zinc-950 overflow-hidden scroll-text-reveal-container">
+  <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-10">
+    
+    {/* LEFT: Text Reveal */}
+    <div className="flex-1 mt-10">
+      <h2 className="text-4xl sm:text-6xl md:text-7xl xl:text-8xl font-black leading-[1] tracking-tighter">
+        {["BUILDING THE", "NEXT GENERATION", "OF CYBERNETIC", "INTELLIGENCE."].map((t, i) => (
+          <span 
+            key={i} 
+            className={cn(
+              "scroll-text-reveal block [transform-style:preserve-3d]", 
+              i === 2 ? "text-primary" : "text-white"
+            )}
+          >
+            {t}
+          </span>
+        ))}
+      </h2>
+    </div>
 
+    {/* RIGHT: Robot Spline Scene */}
+    <div className="flex-1 w-full h-[400px] sm:h-[500px] lg:h-[600px] relative">
+      <SplineScene 
+        scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+        className="w-full h-full"
+      />
+      {/* Optional: Add the radial glow behind the robot to make it pop */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-white opacity-10 blur-[100px] rounded-full pointer-events-none" />
+    </div>
+
+  </div>
+</section>
       {/* ALUMNI MARQUEE */}
       <section className="py-32 bg-black overflow-hidden relative border-t border-white/5">
         <div className="max-w-7xl mx-auto px-6 mb-16 text-center">
@@ -330,13 +353,7 @@ useEffect(() => {
           </h2>
           <p className="mt-8 text-xl font-bold uppercase tracking-widest text-muted-foreground">— Cyborg Motto</p>
         </div>
-      </section>
-      <div className="flex-1 relative">
-          <SplineScene 
-            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-            className="w-full h-full"
-          />
-        </div>
+      </section>   
       <style jsx global>{`
         @keyframes scan {
           0% { top: 0; opacity: 0; }
