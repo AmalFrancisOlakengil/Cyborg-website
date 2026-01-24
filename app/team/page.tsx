@@ -25,11 +25,11 @@ const teamMembers = [
   },
   {
     id: 3,
-    name: "Jason",
+    name: "V. Jason Emmanuel ",
     role: "Secretary",
-    image: "/male-student-portrait.png",
-    bio: "Bridging the gap between tech and community engagement.",
-    socials: { github: "#", linkedin: "#", twitter: "#" },
+    image: "/team/team16.jpeg",
+    bio: "Stay schemin ",
+    socials: { github: "#", linkedin: "https://www.linkedin.com/in/jason-emmanuel-53202328b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app", twitter: "#" },
   },
    {
     id: 4,
@@ -124,7 +124,7 @@ const teamMembers = [
     name: "Paavesh Pradish",
     role: "Content domain member",
     image: "/team/team12.png",
-    bio: "Learn.Build.Inovate",
+    bio: "Learn.Build.Innovate",
     socials: { github: "https://github.com/paaveshpradish05-beep", linkedin: "https://www.linkedin.com/in/paavesh-pradish-001762342?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app", twitter: "#" },
   },
   {
@@ -143,6 +143,22 @@ const teamMembers = [
     bio: "Cybersecurity student focused on network security and organizing technical events",
     socials: { github: "https://github.com/harinii0107", linkedin: "https://www.linkedin.com/in/harini-sankaranarayanan-a195ba344/", twitter: "#" },
   },
+ {
+    id: 18,
+    name: "S.Yuvanesh",
+    role: "Event Organizing Head",
+    image: "/team/team15.webp",
+    bio: "Hi, I am Yuvanesh 3rd year cse core student and I am the event organizing lead of Cyborg.",
+    socials: { github: "#", linkedin: "https://www.linkedin.com/in/s-yuvanesh-babu-413b95347?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app", twitter: "#" },
+  },
+  {
+    id: 19,
+    name: "Achuthan",
+    role: "Tech Team Member",
+    image: "/team/team17.jpeg",
+    bio: "Web Developer ",
+    socials: { github: "https://github.com/achuthan-s", linkedin: "https://www.linkedin.com/in/achuthan-s/", twitter: "#" },
+  },  
 ]
 
 export default function TeamPage() {
