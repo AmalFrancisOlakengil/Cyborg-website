@@ -1,7 +1,7 @@
 "use client"
 import { ShaderAnimation } from "@/components/shader-animation";
 import { SplineScene } from "@/components/ui/splite";
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 import { TextPlugin } from "gsap/TextPlugin"
@@ -87,14 +87,48 @@ const AlumniCard = ({ img, name, company, companyLogo, batch, offer }: any) => (
 )
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [progress, setProgress] = useState(0);
+  
   const containerRef = useRef<HTMLDivElement>(null)
   const heroSectionRef = useRef<HTMLElement>(null)
   const heroTextRef = useRef<HTMLDivElement>(null)
-  // Ref specifically for the "Cyborg Club" text to apply the tilt effect
   const titleTextRef = useRef<HTMLHeadingElement>(null) 
   const visionStickyRef = useRef<HTMLDivElement>(null)
+  const loaderRef = useRef<HTMLDivElement>(null)
 
 useEffect(() => {
+
+  let interval = setInterval(() => {
+      setProgress((prev) => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          return 100;
+        }
+        return prev + 1;
+      });
+    }, 20);
+
+    const ctx = gsap.context(() => {
+      // --- 0. ENTRANCE ANIMATION (Triggered when loading finishes) ---
+      if (!isLoading) {
+        const entryTl = gsap.timeline();
+
+        entryTl
+          .to(loaderRef.current, {
+            clipPath: "inset(0 0 100% 0)", // Slide up reveal
+            duration: 1.2,
+            ease: "power4.inOut",
+          })
+          .from(heroTextRef.current?.querySelectorAll("h1, p, div"), {
+            scale: 1.5,
+            opacity: 0,
+            filter: "blur(20px)",
+            duration: 1.5,
+            stagger: 0.1,
+            ease: "power3.out",
+          }, "-=0.8");
+     }
     // --- 0. MOUSE MOVE TILT LOGIC (Applied to Text Only) ---
     // This creates the quick setter functions for high performance 
     const xTo = gsap.quickTo(titleTextRef.current, "rotationY", { duration: 0.3, ease: "power3" })
@@ -117,22 +151,13 @@ useEffect(() => {
     window.addEventListener("mousemove", handleMouseMove)
 
     // --- EXISTING GSAP CONTEXT ---
-    const ctx = gsap.context(() => {
+    
       const mm = gsap.matchMedia()
 
       // 1. ZOOM OUT & FADE IN LOAD ANIMATION (Updated)
       const tl = gsap.timeline();
       
-      // We target the individual elements for a cleaner staggered zoom
-      tl.from(heroTextRef.current?.querySelectorAll("h1, p, div"), {
-        scale: 1.3,          // Start larger (zoomed in)
-        z: 100,              // Bring it slightly forward in 3D space
-        opacity: 0,          // Fade in
-        filter: "blur(10px)", // Optional: adding a slight blur for a "lens" effect
-        duration: 1.5,
-        stagger: 0.15,
-        ease: "power3.out",
-      });
+   
 
       // 2. VISION ANIMATION (DESKTOP PIN)
       mm.add("(min-width: 1024px)", () => {
@@ -192,18 +217,53 @@ useEffect(() => {
       })
 
     }, containerRef)
+
+    const timeout = setTimeout(() => setIsLoading(false), 2500);
     
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove)
-      ctx.revert()
+     ctx.revert();
+      clearTimeout(timeout);
+      clearInterval(interval)
     }
-  }, [])
+  }, [isLoading])
 
   return (
     <div ref={containerRef} className="bg-black text-white selection:bg-primary">
+
+      {/* --- PRELOADER OVERLAY --- */}
+      {isLoading && (
+        <div 
+          ref={loaderRef}
+          className="fixed inset-0 z-[100] bg-black flex flex-col items-center justify-center overflow-hidden"
+        >
+          <div className="relative w-full max-w-md px-10">
+            {/* Cyberpunk Progress Bar */}
+            <div className="h-[2px] w-full bg-white/10 relative overflow-hidden">
+              <div 
+                className="absolute inset-y-0 left-0 bg-primary transition-all duration-100" 
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <div className="flex justify-between mt-4 font-mono text-[10px] tracking-widest uppercase text-zinc-500">
+              <span>Initializing System</span>
+              <span className="text-white">{progress}%</span>
+            </div>
+          </div>
+          
+          {/* Big Background Text for Loader */}
+          <h2 className="absolute text-[20vw] font-black text-white/5 select-none pointer-events-none uppercase">
+            Cyborg
+          </h2>
+        </div>
+      )}
    {/* HERO SECTION */}
-      <section ref={heroSectionRef} className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-6 pt-20 lg:pt-0 perspective-2000">
-        
+      <section 
+        ref={heroSectionRef} 
+        className={cn(
+          "relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-6 pt-20 lg:pt-0 perspective-2000",
+          isLoading ? "invisible" : "visible" // Hide content until loader finishes
+        )}
+      >
         {/* SHADER BACKGROUND - FIXED POSITIONING */}
         <div className="absolute inset-0 z-0 pointer-events-none">
           <ShaderAnimation />
